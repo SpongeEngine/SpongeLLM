@@ -1,0 +1,46 @@
+name: Publish NuGet Package
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch: # Enables the "Run workflow" button
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: |
+          6.0.x
+          7.0.x
+          8.0.x
+
+    - name: Get version from source
+      id: get-version
+      run: |
+        VERSION=$(cat SpongeEngine.SpongeLLM/SpongeEngine.SpongeLLM.csproj | grep '<Version>' | sed -E 's/.*<Version>(.*)<\/Version>.*/\1/')
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "Using version: $VERSION"
+
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build for .NET 6.0
+      run: dotnet build --configuration Release --framework net6.0 --no-restore
+      
+    - name: Build for .NET 7.0
+      run: dotnet build --configuration Release --framework net7.0 --no-restore
+
+    - name: Build for .NET 8.0
+      run: dotnet build --configuration Release --framework net8.0 --no-restore
+
+    - name: Pack NuGet Package
+      run: dotnet pack --configuration Release --output ./output /p:Version=${{ env.VERSION }}
+
+    - name: Publish NuGet Package
+      run: dotnet nuget push ./output/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
