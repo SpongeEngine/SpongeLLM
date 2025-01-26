@@ -1,40 +1,55 @@
-﻿using SpongeEngine.KoboldSharp;
-using SpongeEngine.LLMSharp.Core;
-using SpongeEngine.LLMSharp.Core.Interfaces;
-using SpongeEngine.LLMSharp.Core.Models;
+﻿using Microsoft.Extensions.Logging;
+using SpongeEngine.KoboldSharp;
 using SpongeEngine.LMStudioSharp;
 using SpongeEngine.OobaboogaSharp;
+using SpongeEngine.SpongeLLM.Core;
+using SpongeEngine.SpongeLLM.Core.Interfaces;
+using SpongeEngine.SpongeLLM.Core.Models;
 
 namespace SpongeEngine.SpongeLLM
 {
-    public class SpongeLLMClient: LlmClientBase, ITextCompletion, IStreamableTextCompletion
+    public class SpongeLLMClient: LLMClientBase, IIsAvailable, ITextCompletion, IStreamableTextCompletion
     {
-        public LlmClientBase Client { get; private set; }
+        public LLMClientBase Client { get; private set; }
         
-        public SpongeLLMClient(LlmClientBaseOptions options): base(options) {
+        public SpongeLLMClient(LLMClientBaseOptions options): base(options) {
             Client = options switch {
                 OobaboogaSharpClientOptions oobaboogaOptions => new OobaboogaSharpClient(oobaboogaOptions),
                 KoboldSharpClientOptions koboldOptions => new KoboldSharpClient(koboldOptions),
-                LmStudioClientOptions lmsOptions => new LmStudioSharpClient(lmsOptions),
+                LMStudioClientOptions lmsOptions => new LMStudioSharpClient(lmsOptions),
                 _ => throw new ArgumentException($"Unsupported options type: {options.GetType()}")
             };
         }
+        
+        public virtual async Task<bool> IsAvailableAsync(CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                using var response = await Options.HttpClient.GetAsync(Options.HttpClient.BaseAddress, cancellationToken);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Options.Logger?.LogWarning(ex, "Availability check failed");
+                return false;
+            }
+        }
 
-        public Task<TextCompletionResult> CompleteTextAsync(TextCompletionRequest request, CancellationToken ct = new CancellationToken())
+        public Task<TextCompletionResult> CompleteTextAsync(TextCompletionRequest request, CancellationToken cancellationToken = new CancellationToken())
         {
             if (Client is ITextCompletion completionService)
             {
-                return completionService.CompleteTextAsync(request, ct);
+                return completionService.CompleteTextAsync(request, cancellationToken);
             }
     
             throw new NotSupportedException($"Client {Client.GetType()} does not support completions");
         }
 
-        public IAsyncEnumerable<TextCompletionToken> CompleteTextStreamAsync(TextCompletionRequest request, CancellationToken ct = new CancellationToken())
+        public IAsyncEnumerable<TextCompletionToken> CompleteTextStreamAsync(TextCompletionRequest request, CancellationToken cancellationToken = new CancellationToken())
         {
             if (Client is IStreamableTextCompletion completionService)
             {
-                return completionService.CompleteTextStreamAsync(request, ct);
+                return completionService.CompleteTextStreamAsync(request, cancellationToken);
             }
     
             throw new NotSupportedException($"Client {Client.GetType()} does not support streaming completions");

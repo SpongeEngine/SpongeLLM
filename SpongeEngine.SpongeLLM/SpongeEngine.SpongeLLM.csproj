@@ -17,7 +17,7 @@
         <PackageTags>llm, ai, openai, localai, koboldcpp, ollama, lm-studio, text-generation-webui, 
         local-llm, offline-ai, self-hosted-ai, llama, gpt, neural-network, machine-learning, 
         text-generation, completion, chat, dotnet, csharp, cross-platform</PackageTags>
-        <PackageProjectUrl>https://github.com/SpongeEngine/SpongeEngine.LLMSharp</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/SpongeEngine/SpongeEngine.SpongeLLM</PackageProjectUrl>
         <RepositoryUrl>https://github.com/SpongeEngine/SpongeEngine.SpongeLLM</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -46,10 +46,10 @@
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="OllamaSharp" Version="5.0.3" />
         <PackageReference Include="Polly" Version="8.5.1" />
-        <PackageReference Include="SpongeEngine.KoboldSharp" Version="1.82.4.1" />
-        <PackageReference Include="SpongeEngine.LLMSharp.Core" Version="2.3.1" />
-        <PackageReference Include="SpongeEngine.LMStudioSharp" Version="0.3.8.4" />
-        <PackageReference Include="SpongeEngine.OobaboogaSharp" Version="2.3.4" />
+        <PackageReference Include="SpongeEngine.KoboldSharp" Version="1.82.4.2" />
+        <PackageReference Include="SpongeEngine.LMStudioSharp" Version="0.3.8.5" />
+        <PackageReference Include="SpongeEngine.OobaboogaSharp" Version="2.3.0.1" />
+        <PackageReference Include="SpongeEngine.SpongeLLM.Core" Version="0.0.3" />
         <PackageReference Include="System.Linq.Async" Version="6.0.1" />
     </ItemGroup>
 

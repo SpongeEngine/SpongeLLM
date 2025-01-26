@@ -1,6 +1,6 @@
-﻿using SpongeEngine.LLMSharp.Core;
+﻿using SpongeEngine.SpongeLLM.Core;
 
 namespace SpongeEngine.SpongeLLM
 {
-    public class SpongeLLMClientOptions: LlmClientBaseOptions {}
+    public class SpongeLLMClientOptions: LLMClientBaseOptions {}
 }
