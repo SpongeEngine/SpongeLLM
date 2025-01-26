@@ -1,8 +1,8 @@
 # SpongeLLM (In Progress)
-[![NuGet](https://img.shields.io/nuget/v/LLMSharp.svg)](https://www.nuget.org/packages/LLMSharp)
-[![NuGet Downloads](https://img.shields.io/nuget/dt/LLMSharp.svg)](https://www.nuget.org/packages/LLMSharp)
+[![NuGet](https://img.shields.io/nuget/v/SpongeLLM.svg)](https://www.nuget.org/packages/SpongeLLM)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/SpongeLLM.svg)](https://www.nuget.org/packages/SpongeLLM)
 [![Tests](https://github.com/SpongeEngine/LMSharp/actions/workflows/test.yml/badge.svg)](https://github.com/SpongeEngine/LMSharp/actions/workflows/test.yml)
-[![License](https://img.shields.io/github/license/SpongeEngine/LLMSharp)](LICENSE)
+[![License](https://img.shields.io/github/license/SpongeEngine/SpongeLLM)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-6.0%20%7C%207.0%20%7C%208.0%2B-512BD4)](https://dotnet.microsoft.com/download)
 
 Unified C# client for LLM providers.
@@ -11,7 +11,7 @@ Unified C# client for LLM providers.
 - Provider Flexibility: Easily switch between KoboldCpp, Ollama, LM Studio, or Text Generation WebUI
 - Modern .NET: Async/await, streaming support, and comprehensive logging
 
-📦 [View Package on NuGet](https://www.nuget.org/packages/LLMSharp)
+📦 [View Package on NuGet](https://www.nuget.org/packages/SpongeLLM)
 
 ## Feature Comparison
 | Feature | LLMSharp | OpenAI.NET | LLamaSharp | OllamaSharp |
