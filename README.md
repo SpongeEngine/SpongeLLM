@@ -11,7 +11,7 @@ Unified C# client for LLM providers.
 - Provider Flexibility: Easily switch between KoboldCpp, Ollama, LM Studio, or Text Generation WebUI
 - Modern .NET: Async/await, streaming support, and comprehensive logging
 
-📦 [View Package on NuGet](https://www.nuget.org/packages/SpongeLLM)
+📦 [View Package on NuGet](https://www.nuget.org/packages/SpongeEngine.SpongeLLM)
 
 ## Feature Comparison
 | Feature | LLMSharp | OpenAI.NET | LLamaSharp | OllamaSharp |
