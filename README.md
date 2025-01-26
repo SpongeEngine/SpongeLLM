@@ -1,7 +1,7 @@
 # SpongeLLM (In Progress)
 [![NuGet](https://img.shields.io/nuget/v/SpongeLLM.svg)](https://www.nuget.org/packages/SpongeLLM)
 [![NuGet Downloads](https://img.shields.io/nuget/dt/SpongeLLM.svg)](https://www.nuget.org/packages/SpongeLLM)
-[![Tests](https://github.com/SpongeEngine/LMSharp/actions/workflows/test.yml/badge.svg)](https://github.com/SpongeEngine/LMSharp/actions/workflows/test.yml)
+[![Tests](https://github.com/SpongeEngine/SpongeLLM/actions/workflows/test.yml/badge.svg)](https://github.com/SpongeEngine/SpongeLLM/actions/workflows/test.yml)
 [![License](https://img.shields.io/github/license/SpongeEngine/SpongeLLM)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-6.0%20%7C%207.0%20%7C%208.0%2B-512BD4)](https://dotnet.microsoft.com/download)
 
