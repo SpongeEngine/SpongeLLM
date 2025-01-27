@@ -8,7 +8,7 @@
         <!-- Package Info -->
         <PackageId>SpongeEngine.SpongeLLM</PackageId>
         <Title>SpongeEngine.SpongeLLM</Title>
-        <Version>0.0.3</Version>
+        <Version>0.0.4</Version>
         <Authors>Dan Clipca</Authors>
         <Company>Sponge Engine</Company>
         <Description>Unified C# client for LLM providers.</Description>
@@ -43,8 +43,7 @@
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.1" Condition="'$(TargetFramework)' == 'net6.0'" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.1" Condition="'$(TargetFramework)' == 'net7.0'" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.1" Condition="'$(TargetFramework)' == 'net8.0'" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="OllamaSharp" Version="5.0.3" />
+        <PackageReference Include="OllamaSharp" Version="5.0.4" />
         <PackageReference Include="Polly" Version="8.5.1" />
         <PackageReference Include="SpongeEngine.KoboldSharp" Version="1.82.4.2" />
         <PackageReference Include="SpongeEngine.LMStudioSharp" Version="0.3.8.5" />

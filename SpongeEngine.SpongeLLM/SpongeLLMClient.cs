@@ -10,7 +10,7 @@ namespace SpongeEngine.SpongeLLM
 {
     public class SpongeLLMClient: LLMClientBase, IIsAvailable, ITextCompletion, IStreamableTextCompletion
     {
-        public LLMClientBase Client { get; private set; }
+        public LLMClientBase Client { get; set; }
         
         public SpongeLLMClient(LLMClientBaseOptions options): base(options) {
             Client = options switch {
