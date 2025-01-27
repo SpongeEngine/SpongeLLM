@@ -1,322 +1,177 @@
-# SpongeLLM (In Progress)
-[![NuGet](https://img.shields.io/nuget/v/SpongeLLM.svg)](https://www.nuget.org/packages/SpongeLLM)
-[![NuGet Downloads](https://img.shields.io/nuget/dt/SpongeLLM.svg)](https://www.nuget.org/packages/SpongeLLM)
+# SpongeLLM
+[![NuGet](https://img.shields.io/nuget/v/SpongeEngine.SpongeLLM.svg)](https://www.nuget.org/packages/SpongeEngine.SpongeLLM)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/SpongeEngine.SpongeLLM.svg)](https://www.nuget.org/packages/SpongeEngine.SpongeLLM)
 [![Tests](https://github.com/SpongeEngine/SpongeLLM/actions/workflows/run-tests.yml/badge.svg)](https://github.com/SpongeEngine/SpongeLLM/actions/workflows/run-tests.yml)
 [![License](https://img.shields.io/github/license/SpongeEngine/SpongeLLM)](LICENSE)
-[![.NET](https://img.shields.io/badge/.NET-6.0%20%7C%207.0%20%7C%208.0%2B-512BD4)](https://dotnet.microsoft.com/download)
+[![.NET](https://img.shields.io/badge/.NET-6.0%20%7C%207.0%20%7C%208.0-512BD4)](https://dotnet.microsoft.com/download)
 
-Unified C# client for LLM providers.
+A unified C# client for interacting with various LLM providers through a consistent interface.
 
-- Single API: Use the same code regardless of the underlying LLM provider
-- Provider Flexibility: Easily switch between KoboldCpp, Ollama, LM Studio, or Text Generation WebUI
-- Modern .NET: Async/await, streaming support, and comprehensive logging
+## Key Features
 
-📦 [View Package on NuGet](https://www.nuget.org/packages/SpongeEngine.SpongeLLM)
-
-## Feature Comparison
-| Feature | LLMSharp | OpenAI.NET | LLamaSharp | OllamaSharp |
-|---------|-------------|------------|------------|-------------|
-| Local LLM Support | ✅ | ❌ | ✅ | ✅ |
-| Multiple Providers | ✅ | ❌ | ❌ | ❌ |
-| KoboldCpp Support | ✅ | ❌ | ❌ | ❌ |
-| Ollama Support | ✅ | ❌ | ❌ | ✅ |
-| LM Studio Support | ✅ | ❌ | ❌ | ❌ |
-| Text Gen WebUI Support | ✅ | ❌ | ❌ | ❌ |
-| Streaming | ✅ | ✅ | ✅ | ✅ |
-| OpenAI Compatible | ✅ | ✅ | ❌ | ✅ |
-| Progress Tracking | ✅ | ❌ | ❌ | ❌ |
-| Retry Policies | ✅ | ❌ | ❌ | ❌ |
-| Circuit Breaker | ✅ | ❌ | ❌ | ❌ |
-| .NET Standard 2.0 | ❌ | ✅ | ✅ | ✅ |
-| .NET 6.0+ | ✅ | ✅ | ✅ | ✅ |
-
-```mermaid
-classDiagram
-    %% Core Interfaces
-    class ICompletionService {
-        <<interface>>
-        +CompleteAsync(CompletionRequest)*
-        +StreamCompletionAsync(CompletionRequest)*
-    }
-    class IChatService {
-        <<interface>>
-        +ChatCompleteAsync(ChatRequest)*
-        +StreamChatAsync(ChatRequest)*
-    }
-    class IModelMetadata {
-        <<interface>>
-        +GetAvailableModelsAsync()*
-        +GetModelInfoAsync(string)*
-    }
-
-    %% Base Abstract Client
-    class LlmClient {
-        <<abstract>>
-        #HttpClient _httpClient
-        #ILogger _logger
-        #LlmOptions _options
-        #RetryPolicy _retryPolicy
-        #CircuitBreaker _circuitBreaker
-        #ExecuteWithResilienceAsync[T]()
-        +IsAvailableAsync()
-    }
-
-    %% Providers 
-    class OobaboogaSharp {
-        +CompleteAsync()
-        +StreamCompletionAsync()
-        +ChatCompleteAsync()
-        +GetAvailableModels()
-    }
-    class LmStudioSharp {
-        +CompleteAsync()
-        +StreamCompletionAsync()
-        +ChatCompleteAsync()
-    }
-    class KoboldSharp {
-        +CompleteAsync()
-        +StreamCompletionAsync()
-    }
-    class Gpt4AllSharp {
-        +ChatCompleteAsync()
-        +StreamChatAsync()
-        +GetAvailableModels()
-    }
-
-    %% Base Inheritance
-    LlmClient --> OobaboogaSharp
-    LlmClient --> LmStudioSharp
-    LlmClient --> KoboldSharp
-    LlmClient --> Gpt4AllSharp
-
-    %% Interface Implementation
-    ICompletionService <.. OobaboogaSharp
-    IChatService <.. OobaboogaSharp
-    IModelMetadata <.. OobaboogaSharp
-
-    ICompletionService <.. LmStudioSharp
-    IChatService <.. LmStudioSharp
-
-    ICompletionService <.. KoboldSharp
-
-    IChatService <.. Gpt4AllSharp
-    IModelMetadata <.. Gpt4AllSharp
-```
-
-## Supported Providers
-- [KoboldCpp](https://github.com/LostRuins/koboldcpp): Both native and OpenAI-compatible modes
-- [Ollama](https://github.com/ollama/ollama): Run Llama 2, Code Llama, and other models locally (using OllamaSharp).
-- [LM Studio](https://lmstudio.ai): Local deployment of various open-source models
-- [Text Generation WebUI](https://github.com/oobabooga/text-generation-webui): Popular web interface for running local models
+- **Unified Interface**: Write code once, switch providers seamlessly
+- **Multiple Provider Support**: Works with KoboldCpp, Ollama, LM Studio, and Text Generation WebUI
+- **.NET Modern Features**: Full async/await support with streaming capabilities
+- **Cross-Platform**: Runs on any platform supporting .NET 6.0, 7.0, or 8.0
+- **Production Ready**: Includes logging, resilience patterns, and comprehensive error handling
 
 ## Installation
-Install LLMSharp via NuGet:
+
+Install via NuGet:
+
 ```bash
-dotnet add package LLMSharp
+dotnet add package SpongeEngine.SpongeLLM
 ```
 
 ## Quick Start
-```csharp
-using LLMSharp.Client;
-using LLMSharp.Models.Configuration;
 
-// Create client with KoboldCpp provider
-var options = new LocalAIOptions
+```csharp
+using SpongeEngine.SpongeLLM;
+using SpongeEngine.KoboldSharp;
+using SpongeEngine.SpongeLLM.Core.Models;
+
+// Initialize with your preferred provider
+var options = new KoboldSharpClientOptions
 {
-    BaseUrl = "http://localhost:5000",
-    ProviderOptions = new KoboldCppNativeOptions
-    {
-        ContextSize = 2048,
-        UseGpu = true,
-        RepetitionPenalty = 1.1f
-    }
+    BaseUrl = "http://localhost:5000"
 };
 
-using var client = new LocalAIClient(options);
+var client = new SpongeLLMClient(options);
 
-// Generate text completion
-string response = await client.CompleteAsync("Write a short story about a robot:");
+// Check if service is available
+bool isAvailable = await client.IsAvailableAsync();
+
+// Basic text completion
+var request = new TextCompletionRequest
+{
+    Prompt = "Write a short story about a robot:",
+    MaxTokens = 100
+};
+
+var result = await client.CompleteTextAsync(request);
+Console.WriteLine(result.Text);
 
 // Stream completion tokens
-await foreach (var token in client.StreamCompletionAsync("Once upon a time..."))
+await foreach (var token in client.CompleteTextStreamAsync(request))
 {
-    Console.Write(token);
-}
-
-// List available models
-var models = await client.GetAvailableModelsAsync();
-foreach (var model in models)
-{
-    Console.WriteLine($"Model: {model.Name} (Provider: {model.Provider})");
-    Console.WriteLine($"Context Length: {model.Capabilities.MaxContextLength}");
+    Console.Write(token.Text);
 }
 ```
+
+## Supported Providers
+
+The library includes built-in support for:
+
+- **KoboldCpp**: Local inference with various open-source models
+- **Ollama**: Easy deployment of Llama 2, Code Llama, and other models
+- **LM Studio**: User-friendly interface for running local models
+- **Text Generation WebUI**: Popular interface for model deployment and inference
 
 ## Provider Configuration
 
-### KoboldCpp (Native)
+### KoboldCpp
+
 ```csharp
-var options = new LocalAIOptions
+var options = new KoboldSharpClientOptions
 {
     BaseUrl = "http://localhost:5000",
-    ProviderOptions = new KoboldCppNativeOptions
-    {
-        ContextSize = 2048,
-        UseGpu = true,
-        RepetitionPenalty = 1.1f,
-        RepetitionPenaltyRange = 320,
-        TrimStop = true,
-        Mirostat = new MirostatSettings
-        {
-            Mode = 2,
-            Tau = 5.0f,
-            Eta = 0.1f
-        }
-    }
-};
-```
-
-### KoboldCpp (OpenAI-compatible)
-```csharp
-var options = new LocalAIOptions
-{
-    BaseUrl = "http://localhost:5000",
-    ProviderOptions = new KoboldCppOpenAiOptions
-    {
-        ContextSize = 2048,
-        UseGpu = true,
-        ModelName = "koboldcpp",
-        UseChatCompletions = true
-    }
-};
-```
-
-### Ollama
-```csharp
-var options = new LocalAIOptions
-{
-    BaseUrl = "http://localhost:11434",
-    ProviderOptions = new OllamaOptions
-    {
-        ConcurrentRequests = 1
-    }
+    UseGpu = true,
+    MaxContextLength = 2048
 };
 ```
 
 ### LM Studio
+
 ```csharp
-var options = new LocalAIOptions
+var options = new LMStudioClientOptions
 {
     BaseUrl = "http://localhost:1234",
-    ProviderOptions = new LMStudioOptions
-    {
-        UseOpenAIEndpoint = true
-    }
+    UseOpenAICompat = true
 };
 ```
 
-### Text Generation WebUI
+### Text Generation WebUI (Oobabooga)
+
 ```csharp
-var options = new LocalAIOptions
+var options = new OobaboogaSharpClientOptions
 {
     BaseUrl = "http://localhost:7860",
-    ProviderOptions = new TextGenWebOptions
-    {
-        UseOpenAIEndpoint = true
-    }
+    UseOpenAICompat = true
 };
 ```
 
 ## Completion Options
-```csharp
-var options = new CompletionOptions
-{
-    ModelName = "wizardLM",         // Optional model name
-    MaxTokens = 200,                // Max tokens to generate
-    Temperature = 0.7f,             // Randomness (0.0-1.0)
-    TopP = 0.9f,                    // Nucleus sampling threshold
-    StopSequences = new[] { "\n" }  // Sequences that stop generation
-};
 
-string response = await client.CompleteAsync("Your prompt here", options);
-```
+Configure text completion requests with various parameters:
 
-## Progress Tracking
 ```csharp
-client.OnProgress += (progress) =>
+var request = new TextCompletionRequest
 {
-    switch (progress.State)
-    {
-        case LocalAIProgressState.Starting:
-            Console.WriteLine("Starting completion...");
-            break;
-        case LocalAIProgressState.Processing:
-            Console.WriteLine($"Processing: {progress.Message}");
-            break;
-        case LocalAIProgressState.Streaming:
-            Console.WriteLine("Receiving tokens...");
-            break;
-        case LocalAIProgressState.Complete:
-            Console.WriteLine("Completion finished!");
-            break;
-        case LocalAIProgressState.Failed:
-            Console.WriteLine($"Error: {progress.Message}");
-            break;
-    }
+    Prompt = "Once upon a time",
+    MaxTokens = 200,
+    Temperature = 0.7f,
+    TopP = 0.9f,
+    StopSequences = new[] { "\n\n", "THE END" }
 };
 ```
 
 ## Error Handling
+
+The client includes comprehensive error handling:
+
 ```csharp
 try
 {
-    var response = await client.CompleteAsync("Test prompt");
+    var result = await client.CompleteTextAsync(request);
 }
-catch (LocalAIException ex)
+catch (Exception ex) when (ex is NotSupportedException)
 {
-    Console.WriteLine($"LocalAI API error: {ex.Message}");
-    if (ex.StatusCode.HasValue)
-    {
-        Console.WriteLine($"Status code: {ex.StatusCode}");
-    }
-    if (ex.Provider != null)
-    {
-        Console.WriteLine($"Provider: {ex.Provider}");
-    }
+    Console.WriteLine("This provider doesn't support text completion");
 }
 catch (Exception ex)
 {
-    Console.WriteLine($"General error: {ex.Message}");
+    Console.WriteLine($"Error during completion: {ex.Message}");
 }
 ```
 
 ## Advanced Configuration
+
+SpongeLLM supports additional configuration through provider-specific options:
+
 ```csharp
-var options = new LocalAIOptions
+var options = new KoboldSharpClientOptions
 {
     BaseUrl = "http://localhost:5000",
-    ApiKey = "optional_api_key",
     Timeout = TimeSpan.FromMinutes(2),
-    MaxRetryAttempts = 3,
-    RetryDelay = TimeSpan.FromSeconds(2),
+    RetryCount = 3,
     Logger = loggerInstance,
-    JsonSettings = new JsonSerializerSettings(),
-    ProviderOptions = new KoboldCppNativeOptions()
+    // Additional provider-specific settings
 };
 ```
 
-## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Architecture
+
+SpongeLLM uses a modular architecture based on interfaces:
+
+- `ITextCompletion`: Basic text completion capabilities
+- `IStreamableTextCompletion`: Streaming completion support
+- `IIsAvailable`: Service availability checking
+
+Each provider implements these interfaces as needed, allowing for consistent interaction regardless of the underlying service.
 
 ## Contributing
-Contributions are welcome! Please feel free to submit a Pull Request.
 
-Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on:
-- How to publish to NuGet
-- Development guidelines
-- Code style
+Contributions are welcome! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on:
+
+- Development setup
+- Coding standards
 - Testing requirements
 - Pull request process
 
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 ## Support
-For issues and feature requests, please use the [GitHub issues page](https://github.com/SpongeEngine/LLMSharp/issues).
+
+For issues and feature requests, please use the [GitHub issues page](https://github.com/SpongeEngine/SpongeEngine.SpongeLLM/issues).
