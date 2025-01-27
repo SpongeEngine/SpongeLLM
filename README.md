@@ -1,8 +1,8 @@
 # SpongeLLM
 [![NuGet](https://img.shields.io/nuget/v/SpongeEngine.SpongeLLM.svg)](https://www.nuget.org/packages/SpongeEngine.SpongeLLM)
 [![NuGet Downloads](https://img.shields.io/nuget/dt/SpongeEngine.SpongeLLM.svg)](https://www.nuget.org/packages/SpongeEngine.SpongeLLM)
-[![Tests](https://github.com/SpongeEngine/SpongeEngine.SpongeLLM/actions/workflows/run-tests.yml/badge.svg)](https://github.com/SpongeEngine/SpongeEngine.SpongeLLM/actions/workflows/run-tests.yml)
-[![License](https://img.shields.io/github/license/SpongeEngine/SpongeEngine.SpongeLLM)](LICENSE)
+[![Tests](https://github.com/SpongeEngine/SpongeLLM/actions/workflows/run-tests.yml/badge.svg)](https://github.com/SpongeEngine/SpongeLLM/actions/workflows/run-tests.yml)
+[![License](https://img.shields.io/github/license/SpongeEngine/SpongeLLM)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-6.0%20%7C%207.0%20%7C%208.0-512BD4)](https://dotnet.microsoft.com/download)
 
 A unified C# client for interacting with various LLM providers through a consistent interface.
