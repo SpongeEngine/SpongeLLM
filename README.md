@@ -15,6 +15,8 @@ A unified C# client for interacting with various LLM providers through a consist
 - **Cross-Platform**: Runs on any platform supporting .NET 6.0, 7.0, or 8.0
 - **Production Ready**: Includes logging, resilience patterns, and comprehensive error handling
 
+📦 [View Package on NuGet](https://www.nuget.org/packages/SpongeEngine.SpongeLLM)
+
 ## Installation
 
 Install via NuGet:
