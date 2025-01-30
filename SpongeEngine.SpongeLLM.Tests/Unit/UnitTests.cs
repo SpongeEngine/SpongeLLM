@@ -14,13 +14,13 @@ using Moq;
 
 namespace SpongeEngine.SpongeLLM.Tests.Unit
 {
-    public class SpongeLLMClientTests : UnitTestBase
+    public class UnitTests : UnitTestBase
     {
-        private readonly Mock<ILogger<SpongeLLMClient>> _mockLogger;
+        private readonly Mock<ILogger<SpongeLLM.SpongeLLMClient>> _mockLogger;
         private readonly HttpClient _httpClient;
-        public SpongeLLMClientTests(ITestOutputHelper output) : base(output)
+        public UnitTests(ITestOutputHelper output) : base(output)
         {
-            _mockLogger = new Mock<ILogger<SpongeLLMClient>>();
+            _mockLogger = new Mock<ILogger<SpongeLLM.SpongeLLMClient>>();
             _httpClient = new HttpClient { BaseAddress = new Uri(Server.Urls[0]) };
         }
 
@@ -36,7 +36,7 @@ namespace SpongeEngine.SpongeLLM.Tests.Unit
             options.Logger = _mockLogger.Object;
 
             // Act
-            var client = new SpongeLLMClient(options);
+            var client = new SpongeLLM.SpongeLLMClient(options);
 
             // Assert
             client.Should().NotBeNull();
@@ -57,7 +57,7 @@ namespace SpongeEngine.SpongeLLM.Tests.Unit
             };
 
             // Act & Assert
-            var act = () => new SpongeLLMClient(options);
+            var act = () => new SpongeLLM.SpongeLLMClient(options);
             act.Should().Throw<ArgumentException>()
                 .WithMessage($"Unsupported options type: {typeof(SpongeLLMClientOptions)}");
         }
@@ -75,7 +75,7 @@ namespace SpongeEngine.SpongeLLM.Tests.Unit
                 HttpClient = _httpClient,
                 Logger = _mockLogger.Object
             };
-            var client = new SpongeLLMClient(options);
+            var client = new SpongeLLM.SpongeLLMClient(options);
 
             // Act
             var result = await client.IsAvailableAsync();
@@ -89,7 +89,7 @@ namespace SpongeEngine.SpongeLLM.Tests.Unit
         {
             // Arrange
             var loggerFactory = LoggerFactory.Create(builder => builder.AddXUnit(Output));
-            var logger = loggerFactory.CreateLogger<SpongeLLMClient>();
+            var logger = loggerFactory.CreateLogger<SpongeLLM.SpongeLLMClient>();
 
             Server
                 .Given(Request.Create().WithPath("/").UsingGet())
@@ -100,7 +100,7 @@ namespace SpongeEngine.SpongeLLM.Tests.Unit
                 HttpClient = _httpClient,
                 Logger = logger
             };
-            var client = new SpongeLLMClient(options);
+            var client = new SpongeLLM.SpongeLLMClient(options);
 
             // Act
             var result = await client.IsAvailableAsync();
@@ -118,7 +118,7 @@ namespace SpongeEngine.SpongeLLM.Tests.Unit
                 .Setup(x => x.CompleteTextAsync(It.IsAny<TextCompletionRequest>(), It.IsAny<CancellationToken>()))
                 .ThrowsAsync(new NotSupportedException("Client does not support completions"));
 
-            var client = new TestSpongeLLMClient(new KoboldSharpClientOptions(), mockClient.Object);
+            var client = new TestSpongeLlmClient(new KoboldSharpClientOptions(), mockClient.Object);
 
             // Act
             Func<Task> act = () => client.CompleteTextAsync(new TextCompletionRequest());
@@ -137,7 +137,7 @@ namespace SpongeEngine.SpongeLLM.Tests.Unit
                 .Setup(x => x.CompleteTextStreamAsync(It.IsAny<TextCompletionRequest>(), It.IsAny<CancellationToken>()))
                 .Throws(new NotSupportedException("Client does not support streaming completions"));
 
-            var client = new TestSpongeLLMClient(new KoboldSharpClientOptions(), mockClient.Object);
+            var client = new TestSpongeLlmClient(new KoboldSharpClientOptions(), mockClient.Object);
 
             // Act
             Func<Task> act = async () => await client.CompleteTextStreamAsync(new TextCompletionRequest()).ToListAsync();
@@ -159,9 +159,9 @@ namespace SpongeEngine.SpongeLLM.Tests.Unit
     }
 
     // Test helper class to allow injection of mock client
-    internal class TestSpongeLLMClient : SpongeLLMClient
+    internal class TestSpongeLlmClient : SpongeLLM.SpongeLLMClient
     {
-        public TestSpongeLLMClient(LLMClientBaseOptions options, LLMClientBase client) : base(options)
+        public TestSpongeLlmClient(LLMClientBaseOptions options, LLMClientBase client) : base(options)
         {
             Client = client;
         }

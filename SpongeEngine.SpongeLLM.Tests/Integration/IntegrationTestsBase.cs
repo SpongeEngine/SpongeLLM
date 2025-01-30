@@ -1,4 +1,5 @@
-﻿using SpongeEngine.KoboldSharp;
+﻿using SpongeEngine.SpongeLLM.Core.Interfaces;
+using SpongeEngine.SpongeLLM.Core.Models;
 using SpongeEngine.SpongeLLM.Tests.Common;
 using Xunit;
 using Xunit.Abstractions;
@@ -7,7 +8,7 @@ namespace SpongeEngine.SpongeLLM.Tests.Integration
 {
     public abstract class IntegrationTestsBase : TestBase, IAsyncLifetime
     {
-        protected SpongeLLMClient? Client;
+        protected SpongeLLM.SpongeLLMClient? Client;
         protected ITestOutputHelper Output;
         protected bool ServerAvailable;
 
@@ -20,7 +21,7 @@ namespace SpongeEngine.SpongeLLM.Tests.Integration
         {
             try
             {
-                ServerAvailable = await Client.IsAvailableAsync();
+                ServerAvailable = await Client!.IsAvailableAsync();
                 
                 if (ServerAvailable)
                 {
@@ -28,22 +29,45 @@ namespace SpongeEngine.SpongeLLM.Tests.Integration
                 }
                 else
                 {
-                    Output.WriteLine("Server is not available");
                     throw new SkipException("Server is not available");
                 }
             }
             catch (Exception ex) when (ex is not SkipException)
             {
-                Output.WriteLine($"Failed to connect to server: {ex.Message}");
-                throw new SkipException("Failed to connect to server");
+                Output.WriteLine($"Failed to connect: {ex.Message}");
+                throw new SkipException("Connection failed");
             }
         }
 
         public async Task DisposeAsync()
         {
             Client?.Options.HttpClient?.Dispose();
-            
             await Task.CompletedTask;
+        }
+
+        [SkippableFact]
+        public async Task CompleteTextAsync_ReturnsValidResponse()
+        {
+            Skip.IfNot(ServerAvailable);
+            Skip.If(Client!.Client is not ITextCompletion, 
+                $"{Client.Client.GetType().Name} doesn't support completions");
+            
+            var result = await Client.CompleteTextAsync(new TextCompletionRequest { Prompt = "Hello" });
+            Assert.False(string.IsNullOrEmpty(result.Text));
+        }
+
+        [SkippableFact]
+        public async Task CompleteTextStreamAsync_ReturnsStream()
+        {
+            Skip.IfNot(ServerAvailable);
+            Skip.If(Client!.Client is not IStreamableTextCompletion,
+                $"{Client.Client.GetType().Name} doesn't support streaming");
+            
+            await foreach (var token in Client.CompleteTextStreamAsync(new TextCompletionRequest { Prompt = "Hello" }))
+            {
+                Assert.NotNull(token.Text);
+                break;
+            }
         }
     }
 }

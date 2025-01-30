@@ -7,7 +7,7 @@ namespace SpongeEngine.SpongeLLM.Tests.Integration
     {
         public LMStudioSharpIntegrationTests(ITestOutputHelper output) : base(output)
         {
-            Client = new SpongeLLMClient(new LMStudioClientOptions());
+            Client = new SpongeLLM.SpongeLLMClient(new LMStudioClientOptions());
         }
     }
 }
