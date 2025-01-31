@@ -45,7 +45,7 @@
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.1" Condition="'$(TargetFramework)' == 'net8.0'" />
         <PackageReference Include="OllamaSharp" Version="5.0.4" />
         <PackageReference Include="Polly" Version="8.5.1" />
-        <PackageReference Include="SpongeEngine.KoboldSharp" Version="1.82.4.3" />
+        <PackageReference Include="SpongeEngine.KoboldSharp" Version="1.82.4.4" />
         <PackageReference Include="SpongeEngine.LMStudioSharp" Version="0.3.8.5" />
         <PackageReference Include="SpongeEngine.OobaboogaSharp" Version="2.3.0.1" />
         <PackageReference Include="SpongeEngine.SpongeLLM.Core" Version="0.0.3" />
