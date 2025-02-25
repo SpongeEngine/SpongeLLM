@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/github/license/SpongeEngine/SpongeLLM)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-6.0%20%7C%207.0%20%7C%208.0-512BD4)](https://dotnet.microsoft.com/download)
 
-A unified C# client for interacting with various LLM providers through a consistent interface.
+The unified C# client for LLM providers.
 
 ## Key Features
 
