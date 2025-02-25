@@ -54,5 +54,15 @@ namespace SpongeEngine.SpongeLLM
             
             return clientWithStreamableTextCompletion.CompleteTextStreamAsync(request, cancellationToken);
         }
+
+        public Task<bool> StopInferece()
+        {
+            if (Client is not IStopInference clientWithStopInference)
+            {
+                throw new NotSupportedException($"{Client.GetType()} does not support {nameof(IStopInference)}");
+            }
+            
+            return clientWithStopInference.StopInference();
+        }
     }
 }
