@@ -55,7 +55,7 @@ namespace SpongeEngine.SpongeLLM
             return clientWithStreamableTextCompletion.CompleteTextStreamAsync(request, cancellationToken);
         }
 
-        public Task<bool> StopInferece()
+        public Task<bool> StopInference()
         {
             if (Client is not IStopInference clientWithStopInference)
             {
