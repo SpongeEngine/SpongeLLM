@@ -3,7 +3,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
-        <Version>0.1.1</Version>
+        <Version>0.2.1</Version>
         <AssemblyName>SpongeEngine.SpongeLLM.Tests</AssemblyName>
         <RootNamespace>SpongeEngine.SpongeLLM.Tests</RootNamespace>
         <TargetFrameworks>net8.0;net6.0;net7.0</TargetFrameworks>
