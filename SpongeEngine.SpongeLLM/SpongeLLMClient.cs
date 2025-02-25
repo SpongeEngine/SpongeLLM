@@ -37,22 +37,22 @@ namespace SpongeEngine.SpongeLLM
 
         public Task<TextCompletionResult> CompleteTextAsync(TextCompletionRequest request, CancellationToken cancellationToken = new CancellationToken())
         {
-            if (Client is ITextCompletion completionService)
+            if (Client is not ITextCompletion clientWithTextCompletion)
             {
-                return completionService.CompleteTextAsync(request, cancellationToken);
+                throw new NotSupportedException($"{Client.GetType()} does not support {nameof(ITextCompletion)}");
             }
-    
-            throw new NotSupportedException($"Client {Client.GetType()} does not support completions");
+            
+            return clientWithTextCompletion.CompleteTextAsync(request, cancellationToken);
         }
 
         public IAsyncEnumerable<TextCompletionToken> CompleteTextStreamAsync(TextCompletionRequest request, CancellationToken cancellationToken = new CancellationToken())
         {
-            if (Client is IStreamableTextCompletion completionService)
+            if (Client is not IStreamableTextCompletion clientWithStreamableTextCompletion)
             {
-                return completionService.CompleteTextStreamAsync(request, cancellationToken);
+                throw new NotSupportedException($"{Client.GetType()} does not support {nameof(IStreamableTextCompletion)}");
             }
-    
-            throw new NotSupportedException($"Client {Client.GetType()} does not support streaming completions");
+            
+            return clientWithStreamableTextCompletion.CompleteTextStreamAsync(request, cancellationToken);
         }
     }
 }
